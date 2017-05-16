@@ -27,6 +27,8 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+
+npm-debug.log
 node_modules
 *.js.map
 dist
