@@ -33,3 +33,7 @@ node_modules
 *.js.map
 dist
 
+#NODE:
+
+*.ntvs_analysis.dat
+*.suo
