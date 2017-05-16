@@ -1,5 +1,5 @@
 {
-  "name": "copy-dir",
+  "name": "make-topdirs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
