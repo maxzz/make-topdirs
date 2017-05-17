@@ -128,7 +128,7 @@ export class files {
         if (!process.env.USERPROFILE) {
             throw Error('User HOME is undefined');
         }
-        return process.env.USERPROFILE + '/Desktop';
+        return path.join(process.env.USERPROFILE, 'Desktop');
     }
 
     static nowDay(d: Date): string {
@@ -136,8 +136,7 @@ export class files {
     }
 
     static nowTime(d: Date): string {
-        //return `${zeros(d.getHours(), 2)}.${zeros(d.getMinutes(), 2)}.${zeros(d.getSeconds(), 2)}.${zeros(d.getMilliseconds(), 3)}`;
-        return '01.42.38.617';
+        return `${zeros(d.getHours(), 2)}.${zeros(d.getMinutes(), 2)}.${zeros(d.getSeconds(), 2)}.${zeros(d.getMilliseconds(), 3)}`;
     }
 
     static nowDayTime(delimiter: string = ' at ') {
