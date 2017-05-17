@@ -120,3 +120,8 @@ export class utl {
     }
 
 } //class utl
+
+//module.exports.zeros = utl.zeros;
+//exports.zeros = utl.zeros;
+//module.exports.zeros = utl.zeros.bind(utl);
+export const zeros: (str_: string | any, total_: number) => string = utl.zeros.bind(utl);
