@@ -2,53 +2,59 @@
 import * as path from 'path';
 import * as mkdir from 'mkdir-p';
 
-interface INameEncoding {
+export function formatWith(str: string, obj: Object): string {
+    // 0. Replaces string patterns with named parameters: formatWith("Hello, {subject}", {subject: "world"}) --> "Hello, world"
+    return str.replace(/{([\w\$_]+)}/gm, function fmt_(all, name) {
+        return obj[name] || all;
+    });
+} //formatWith()
+
+export function formatDeep(str: string, obj: Object): string {
+    // 0. Replaces nested patterns.
+    str = formatWith(str, obj);
+    var more: RegExpExecArray = /{([\w\$_]+)}/.exec(str);
+    if (more && typeof obj[more[1]] === 'string') {
+        str = formatDeep(str, obj);
+    }
+    return str;
+} //formatPath()
+
+export function zeros(str_: string | any, total_: number): string {
+    // Returns str_ prefixed with '0's.
+    if (typeof str_ !== 'string') {
+        str_ = '' + str_;
+    }
+
+    if (str_.length === 0 || str_.length >= total_) {
+        return str_;
+    }
+
+    return '0000000000'.slice(0, total_ - str_.length) + str_;
+} //zeros()
+
+export interface INameEncoding {
     name: string;
     enc: string;
 }
 
-export class utl {
-    static formatWith(str: string, obj: Object): string {
-        // 0. Replaces string patterns with named parameters: formatWith("Hello, {subject}", {subject: "world"}) --> "Hello, world"
-        return str.replace(/{([\w\$_]+)}/gm, function fmt_(all, name) {
-            return obj[name] || all;
-        });
-    } //formatWith()
-
-    static formatDeep(str: string, obj: Object): string {
-        // 0. Replaces nested patterns.
-        str = this.formatWith(str, obj);
-        var more: RegExpExecArray = /{([\w\$_]+)}/.exec(str);
-        if (more && typeof obj[more[1]] === 'string') {
-            str = this.formatDeep(str, obj);
-        }
-        return str;
-    } //formatPath()
-
-    static zeros(str_: string | any, total_: number): string {
-        // Returns str_ prefixed with '0's.
-        if (typeof str_ !== 'string') {
-            str_ = '' + str_;
-        }
-
-        if (str_.length === 0 || str_.length >= total_) {
-            return str_;
-        }
-
-        return '0000000000'.slice(0, total_ - str_.length) + str_;
-    } //zeros()
-
-    static isContentMinimized(fname: string): boolean {
-        // 0. Is file minimized and not empty. TODO: handle starting comments.
-        let cnt = fs.readFileSync(fname).toString();
-        return cnt.length > 0 && cnt.indexOf('\n') < 0;
-    }
-
+export class files {
     static exist(name: string): fs.Stats | undefined {
         try {
             return fs.statSync(name);
         } catch (e) {
         }
+    }
+
+    static getExt(name: string): string {
+        return path.extname(name);
+    }
+
+    static getFnameWithExt(name: string): string {
+        return path.basename(name);
+    }
+
+    static getPath(name: string): string {
+        return path.dirname(name);
     }
 
     static isDirectory(name: string): boolean | undefined {
@@ -61,6 +67,12 @@ export class utl {
 
     static isExt(name: string, ext: string): boolean {
         return path.extname(name).toLowerCase() === ext;
+    }
+
+    static isContentMinimized(fname: string): boolean {
+        // 0. Is file minimized and not empty. TODO: handle starting comments.
+        let cnt = fs.readFileSync(fname).toString();
+        return cnt.length > 0 && cnt.indexOf('\n') < 0;
     }
 
     static stripBOM(content: string): string {
@@ -112,16 +124,48 @@ export class utl {
         fs.writeFileSync(uri.name, text_, { encoding: uri.enc });
     } //writeFileSync()
 
-    static getDesktop(): string {
+    static getDesktopPath(): string {
         if (!process.env.USERPROFILE) {
-            throw Error('User home is undefined');
+            throw Error('User HOME is undefined');
         }
         return process.env.USERPROFILE + '/Desktop';
     }
 
-} //class utl
+    static nowDay(d: Date): string {
+        return `${zeros(d.getMonth() + 1, 2)}.${zeros(d.getDate(), 2)}.${d.getFullYear() % 100}`;
+    }
 
-//module.exports.zeros = utl.zeros;
-//exports.zeros = utl.zeros;
-//module.exports.zeros = utl.zeros.bind(utl);
-export const zeros: (str_: string | any, total_: number) => string = utl.zeros.bind(utl);
+    static nowTime(d: Date): string {
+        //return `${zeros(d.getHours(), 2)}.${zeros(d.getMinutes(), 2)}.${zeros(d.getSeconds(), 2)}.${zeros(d.getMilliseconds(), 3)}`;
+        return '01.42.38.617';
+    }
+
+    static nowDayTime(delimiter: string = ' at ') {
+        let d: Date = new Date();
+        return `${this.nowDay(d)}${delimiter}${this.nowTime(d)}`;
+    }
+
+    static ensureNameUnique(name: string, nameIsFname: boolean = true): string {
+        // 0. Ensure that file/folder name is unique.
+        let basename: string, ext: string = '', index: number = 0, initialized: boolean = false;
+        while (1) {
+            let st: fs.Stats = this.exist(name);
+            if (!st || (st.isDirectory() === nameIsFname)) { // case if folder exist but we create file name.
+                return name;
+            }
+            if (!initialized) {
+                let org: path.ParsedPath = path.parse(name);
+                if (nameIsFname) {
+                    org.base = org.name; // to set base name wo/ ext.
+                    ext = org.ext; // folder name may have '.', so keep ext only for file names.
+                }
+                org.ext = '';
+                basename = path.format(org);
+                initialized = true;
+            }
+            index++;
+            name = `${basename} (${index})${ext}`;
+        }
+    } //ensureNameUnique()
+
+}//class files

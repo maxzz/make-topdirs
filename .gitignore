@@ -37,3 +37,7 @@ dist
 
 *.ntvs_analysis.dat
 *.suo
+
+*.dll
+*.db
+*.opendb

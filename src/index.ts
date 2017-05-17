@@ -1,21 +1,15 @@
 import * as utl from './utils-os';
 
-function nowDay(d: Date): string {
-    let a = utl.zeros('aa', 4);
-    let nowT = `${utl.zeros(d.getMonth() + 1, 2)}.${utl.zeros(d.getDate(), 2)}.${d.getFullYear() % 100}`;
-    return nowT;
-}
-
-function nowTime(d: Date): string {
-    let nowT = `${utl.zeros(d.getHours(), 2)}.${utl.zeros(d.getMinutes(), 2)}.${utl.zeros(d.getSeconds(), 2)}.${utl.zeros(d.getMilliseconds(), 3)}`;
-    return nowT;
+function genFilename(): string {
+    // 0. Generate file/folder name.
+    //return utl.files.ensureNameUnique(`${utl.files.getDesktopPath()}/name ${utl.files.nowDayTime()}`, false);
+    //return utl.files.ensureNameUnique(`${utl.files.getDesktopPath()}/name ${utl.files.nowDayTime()}.txt`);
+    //return utl.files.ensureNameUnique(`${utl.files.getDesktopPath()}/name ${utl.files.nowDayTime()}`); //C:\Users\max/Desktop\name 05.17.17 at 01.42.38 (1).617
+    return utl.files.ensureNameUnique(`${utl.files.getDesktopPath()}/name ${utl.files.nowDayTime()}.`);
 }
 
 function main(): void {
-    let d: Date = new Date();
-    console.log(nowDay(d));
-    console.log(nowTime(d));
-    console.log(utl.utl.getDesktop());
+    console.log('' + genFilename());
 }
 
 main();
