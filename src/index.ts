@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as mkdir from 'mkdir-p';
 
-function genFilename(): string {
+function genFolderName(): string {
     // 0. Generate file/folder name.
-    return utl.files.ensureNameUnique(`${utl.files.getDesktopPath()}/name ${utl.files.nowDayTime()}`, false);
+    return utl.files.ensureNameUnique(`${utl.files.getDesktopPath()}/copy ${utl.files.nowDayTime()}`, false);
 }
 
 class app {
@@ -24,28 +24,42 @@ class app {
         });
     } //scanSubDirs()
 
-    static makeDestList(names: string[]): string[] {
-        let rv: string[] = [];
-        names.forEach((name) => {
-            if (utl.files.isDirectory(name)) {
-                this.scanSubDirs(name, 1, rv);
+    static handleNames(dest: string, names: string[]) {
+        names.forEach((root) => {
+            if (utl.files.isDirectory(root)) {
+                let rv: string[] = [];
+                this.scanSubDirs(root, 1, rv);
+
+                console.log(`root "${root}"`);
+                rv.forEach((sub) => {
+                    let short = path.relative(root, sub);
+                    console.log(`short "${short}"`);
+
+                    let last = path.basename(root);
+
+                    let newName = path.join(dest, last, short);
+                    console.log(`new   "${newName}"`);
+
+                    mkdir.sync(newName);
+                });
             }
         });
-        return rv;
-    } //makeDestList()
+    } //handleNames()
 } //class app
 
 function main(): void {
     console.log('Starting...\n');
 
     let newArgs = process.argv.slice(2);
-    let jsFilesToDo: string[] = app.makeDestList(newArgs);
-
-    if (!jsFilesToDo || !jsFilesToDo.length) {
+    if (!newArgs.length) {
         console.log(`Nothing to do on path:\n"${newArgs}"\n`);
         return;
     }
 
+    let dest = genFolderName();
+    app.handleNames(dest, newArgs);
+
+    /*
     jsFilesToDo.forEach((val, index, array) => {
 
         let fname = path.basename(val),
@@ -63,7 +77,7 @@ function main(): void {
         //mkdir.sync(dstDir);
 
     }); //forEach
-
+    */
     console.log('\nDone.\n');
 }
 
