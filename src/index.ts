@@ -23,23 +23,19 @@ class app {
             }
         });
     } //scanSubDirs()
-
     static handleNames(dest: string, names: string[]) {
         names.forEach((root) => {
             if (utl.files.isDirectory(root)) {
                 let rv: string[] = [];
                 this.scanSubDirs(root, 1, rv);
 
-                console.log(`root "${root}"`);
+                console.log(`from "${root}"`);
                 rv.forEach((sub) => {
                     let short = path.relative(root, sub);
-                    console.log(`short "${short}"`);
-
-                    let last = path.basename(root);
-
+                    let last = names.length === 1 ? '' : path.basename(root);
                     let newName = path.join(dest, last, short);
-                    console.log(`new   "${newName}"`);
 
+                    console.log(`  to "${newName}"`);
                     mkdir.sync(newName);
                 });
             }
@@ -48,37 +44,19 @@ class app {
 } //class app
 
 function main(): void {
-    console.log('Starting...\n');
+    console.log('Starting folders structure replication...\n');
 
     let newArgs = process.argv.slice(2);
     if (!newArgs.length) {
-        console.log(`Nothing to do on path:\n"${newArgs}"\n`);
+        console.log(`Specify one or more folder names to replicate folders structure.`);
+        console.log(`Nothing to do with args:\n[${process.argv}]\n`);
         return;
     }
 
     let dest = genFolderName();
     app.handleNames(dest, newArgs);
 
-    /*
-    jsFilesToDo.forEach((val, index, array) => {
-
-        let fname = path.basename(val),
-            srcDir = path.dirname(val);
-
-        let short = path.relative(newArgs[0], val);
-        console.log(`short "${short}"`);
-
-        //console.log(`  ${utl.zeros(index + 1, 3)} of ${jsFilesToDo.length} ${fname}`); //Skipped as uncompressed
-
-        let inPlace = true;
-        let dstDir = inPlace ? srcDir : path.join(srcDir, 'jsnice');
-        let finalName = path.join(dstDir, fname);
-
-        //mkdir.sync(dstDir);
-
-    }); //forEach
-    */
     console.log('\nDone.\n');
-}
+} //main()
 
 main();
