@@ -15,7 +15,7 @@
     <StartWebBrowser>False</StartWebBrowser>
     <NodeExeArguments>
     </NodeExeArguments>
-    <ScriptArguments>"E:\Y\Web\nodejs\utils\make-topdirs"</ScriptArguments>
+    <ScriptArguments>"E:\Y\Web\nodejs\utils\make-topdirs\vs\tests\test1"</ScriptArguments>
     <EnableTypeScript>true</EnableTypeScript>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
