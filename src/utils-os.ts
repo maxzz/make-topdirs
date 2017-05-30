@@ -53,6 +53,19 @@ export class files {
         return path.basename(name);
     }
 
+    static getFnameWithoutExt(fileName: string): string {
+        return path.basename(fileName).split('.')[0];
+    }
+
+    static toUnix(fileName: string): string {
+        const double = /\/\//;
+        let res: string = fileName.replace(/\\/g, '/');
+        while (res.match(double)) {
+            res = res.replace(double, '/');
+        }
+        return res;
+    }
+
     static getPath(name: string): string {
         return path.dirname(name);
     }
