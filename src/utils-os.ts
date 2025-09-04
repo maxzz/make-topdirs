@@ -2,17 +2,17 @@
 import * as path from 'path';
 import * as mkdir from 'mkdir-p';
 
-export function formatWith(str: string, obj: Object): string {
+export function formatWith(str: string, obj: any): string {
     // 0. Replaces string patterns with named parameters: formatWith("Hello, {subject}", {subject: "world"}) --> "Hello, world"
     return str.replace(/{([\w\$_]+)}/gm, function fmt_(all, name) {
         return obj[name] || all;
     });
 } //formatWith()
 
-export function formatDeep(str: string, obj: Object): string {
+export function formatDeep(str: string, obj: any): string {
     // 0. Replaces nested patterns.
     str = formatWith(str, obj);
-    var more: RegExpExecArray = /{([\w\$_]+)}/.exec(str);
+    var more: RegExpExecArray | null = /{([\w\$_]+)}/.exec(str);
     if (more && typeof obj[more[1]] === 'string') {
         str = formatDeep(str, obj);
     }
@@ -101,7 +101,7 @@ export class files {
     static nameEncoding(fname_: string): INameEncoding {
         // 0. split 'name ? utf16' to 'name' and 'utf16'
         let re = /^\s*([^?\s]*)\s*\?\s*([^\s]*)/,
-            m: RegExpExecArray = re.exec(fname_);
+            m: RegExpExecArray | null = re.exec(fname_);
         return {
             name: m && m[1] ? m[1] : fname_,
             enc: m && m[2] ? m[2] : 'utf8'
@@ -111,7 +111,7 @@ export class files {
     static readFileSync(fname_: string, encoding_?: string) {
         var uri: INameEncoding = {
             name: fname_,
-            enc: encoding_
+            enc: encoding_ || 'utf8'
         };
         if (!encoding_) {
             uri = this.nameEncoding(fname_);
@@ -123,7 +123,7 @@ export class files {
     static writeFileSync(fname_: string, text_: string, encoding_?: string) {
         var uri: INameEncoding = {
             name: fname_,
-            enc: encoding_
+            enc: encoding_ || 'utf8'
         };
         if (!encoding_) {
             uri = this.nameEncoding(fname_);
@@ -157,11 +157,12 @@ export class files {
         return `${this.nowDay(d)}${delimiter}${this.nowTime(d)}`;
     }
 
-    static ensureNameUnique(name: string, nameIsFname: boolean = true): string {
+    static ensureNameUnique(name: string, nameIsFname: boolean = true): string | undefined {
         // 0. Ensure that file/folder name is unique.
-        let basename: string, ext: string = '', index: number = 0, initialized: boolean = false;
+        let basename: string = '', ext: string = '', index: number = 0, initialized: boolean = false;
+
         while (1) {
-            let st: fs.Stats = this.exist(name);
+            let st: fs.Stats | undefined = this.exist(name);
             if (!st || (st.isDirectory() === nameIsFname)) { // case if folder exist but we create file name.
                 return name;
             }
@@ -178,6 +179,6 @@ export class files {
             index++;
             name = `${basename} (${index})${ext}`;
         }
-    } //ensureNameUnique()
+    }
 
-}//class files
+}
