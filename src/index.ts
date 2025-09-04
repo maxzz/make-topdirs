@@ -9,10 +9,10 @@ function genFolderName(): string {
 }
 
 class app {
-    static isOurdir(name: string): boolean {
-        return /^\[\d+\] /.test(name);
+    private static isOurdir(name: string): boolean {
+        return /^\[\d+\] /.test(name); // i.e. folder name starts from [1]
     }
-    static scanSubDirs(name: string, level: number, rv_names: string[]) {
+    private static scanSubDirs(name: string, level: number, rv_names: string[]) {
         fs.readdirSync(name).forEach((subName: string) => {
             let fn = path.join(name, subName);
             if (utl.files.isDirectory(fn)) {
