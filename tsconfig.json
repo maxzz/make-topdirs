@@ -3,8 +3,11 @@
         "target": "es2020",
         "module": "commonjs",
         "moduleResolution": "node",
-        "outDir": "./dist",
-        "sourceMap": true
+
+        //"outDir": "dist2",
+        //"sourceMap": true
+        "noEmit": true,
+        "strict": true
     },
     "include": [
         "./src/**/*"

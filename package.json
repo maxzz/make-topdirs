@@ -7,17 +7,12 @@
     "private": true,
     "author": "Max Zakharzhevskiy <maxzz@msn.com>",
     "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^7.0.18",
+        "typescript": "^2.3.2"
+    },
     "dependencies": {
         "mkdir-p": "^0.0.7"
-    },
-    "devDependencies": {
-        "@types/mkdirp": "^0.5.2",
-        "@types/node": "^7.0.18",
-        "source-map-loader": "^0.2.1",
-        "ts-loader": "^2.0.3",
-        "typescript": "^2.3.2",
-        "webpack": "^2.5.1",
-        "webpack-dev-server": "^2.4.5"
     },
     "scripts": {
         "tsc": "tsc -w"
