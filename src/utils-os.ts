@@ -1,6 +1,5 @@
 ﻿import * as fs from 'fs';
 import * as path from 'path';
-import * as mkdir from 'mkdir-p';
 
 export function formatWith(str: string, obj: any): string {
     // 0. Replaces string patterns with named parameters: formatWith("Hello, {subject}", {subject: "world"}) --> "Hello, world"
@@ -116,11 +115,11 @@ export class files {
         if (!encoding_) {
             uri = this.nameEncoding(fname_);
         }
-        var cnt = this.stripBOM(fs.readFileSync(uri.name, uri.enc));
+        var cnt = this.stripBOM(fs.readFileSync(uri.name, uri.enc as BufferEncoding));
         return cnt;
     } //readFileSync()
 
-    static writeFileSync(fname_: string, text_: string, encoding_?: string) {
+    static writeFileSync(fname_: string, text_: string, encoding_?: BufferEncoding) {
         var uri: INameEncoding = {
             name: fname_,
             enc: encoding_ || 'utf8'
@@ -132,9 +131,9 @@ export class files {
         uri.name = path.resolve(uri.name);
 
         let dir = path.dirname(uri.name);
-        mkdir.sync(dir);
+        fs.mkdirSync(dir, { recursive: true });
 
-        fs.writeFileSync(uri.name, text_, { encoding: uri.enc });
+        fs.writeFileSync(uri.name, text_, { encoding: uri.enc as BufferEncoding });
     } //writeFileSync()
 
     static getDesktopPath(): string {
