@@ -1,6 +1,7 @@
 import * as utl from './utils-os';
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
 
 function genFolderName(): string | undefined {
     // 0. Generate file/folder name.
@@ -11,7 +12,7 @@ class app {
     private static isOurdir(name: string): boolean {
         return /^\[\d+\] /.test(name); // i.e. folder name starts from [1]
     }
-    
+
     private static scanSubDirs(name: string, level: number, rv_names: string[]) {
         fs.readdirSync(name).forEach((subName: string) => {
             let fn = path.join(name, subName);
@@ -45,12 +46,12 @@ class app {
 }
 
 function main(): void {
-    console.log('Starting folders structure replication...\n');
+    console.log(chalk.cyan('Starting folders structure replication...\n'));
 
     let newArgs = process.argv.slice(2);
     if (!newArgs.length) {
-        console.log(`Specify one or more folder names to replicate folders structure.`);
-        console.log(`Nothing to do with args:\n[${process.argv}]\n`);
+        console.log(chalk.red(`Specify one or more folder names to replicate folders structure.`));
+        console.log(chalk.red(`Nothing to do with args:\n\t[${process.argv}]\n`));
         return;
     }
 

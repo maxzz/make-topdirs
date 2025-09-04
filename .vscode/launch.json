@@ -8,12 +8,16 @@
             "name": "tsx",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/src/index.ts",
             "runtimeExecutable": "tsx",
+            "program": "${workspaceFolder}/src/index.ts",
             "skipFiles": [
                 "<node_internals>/**",
-                "${workspaceRoot}/node_modules/**"
-            ]
+                "${workspaceFolder}/node_modules/**"
+            ],
+            // "console": "externalTerminal",
+            // "args": [
+            //     "c:/y/w/1-node/1-utils/make-topdirs/src/index.ts"
+            // ]
         }
     ]
 }

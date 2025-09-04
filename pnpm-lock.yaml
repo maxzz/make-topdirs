@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      mkdir-p:
-        specifier: ^0.0.7
-        version: 0.0.7
+      chalk:
+        specifier: ^5.6.0
+        version: 5.6.0
     devDependencies:
       '@types/node':
         specifier: ^24.3.1
@@ -355,6 +355,10 @@ packages:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
     engines: {node: '>=8'}
 
+  chalk@5.6.0:
+    resolution: {integrity: sha512-46QrSQFyVSEyYAgQ22hQ+zDa60YHA4fBstHmtSApj1Y5vKtG27fWowW03jCk5KcbXEWPZUIR894aARCA/G1kfQ==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
   chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
     engines: {node: '>= 14.16.0'}
@@ -473,9 +477,6 @@ packages:
   minipass@7.1.2:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
-
-  mkdir-p@0.0.7:
-    resolution: {integrity: sha512-VkWaZNxDgZle/aJAemUAWdyYX7geyuleKYFfRejf/pFKjxBDbWrMAy41ijg5EiI1U00WR9JcvynuDedE/fTxLA==}
 
   mlly@1.8.0:
     resolution: {integrity: sha512-l8D9ODSRWLe2KHJSifWGwBqpTZXIXTeo8mlKjY+E2HAakaTeNpqAyBZ8GSqLzHgw4XmHmC8whvpjJNMbFZN7/g==}
@@ -874,6 +875,8 @@ snapshots:
 
   cac@6.7.14: {}
 
+  chalk@5.6.0: {}
+
   chokidar@4.0.3:
     dependencies:
       readdirp: 4.1.2
@@ -997,8 +1000,6 @@ snapshots:
       brace-expansion: 2.0.2
 
   minipass@7.1.2: {}
-
-  mkdir-p@0.0.7: {}
 
   mlly@1.8.0:
     dependencies:
