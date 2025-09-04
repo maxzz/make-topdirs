@@ -15,9 +15,9 @@
                 "${workspaceFolder}/node_modules/**"
             ],
             // "console": "externalTerminal",
-            // "args": [
-            //     "c:/y/w/1-node/1-utils/make-topdirs/src/index.ts"
-            // ]
+            "args": [
+                "C:/Users/maxzz/Desktop/test" // any folder name
+            ]
         }
     ]
 }
