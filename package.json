@@ -1,12 +1,12 @@
 {
     "name": "make-topdirs",
     "version": "1.0.0",
-    "description": "",
-    "main": "./src/index.js",
-    "keywords": [],
+    "description": "Create top level folders structure.",
     "private": true,
+    "keywords": [],
     "author": "Max Zakharzhevskiy <maxzz@msn.com>",
     "license": "ISC",
+    "main": "./src/index.js",
     "devDependencies": {
         "@types/node": "^24.3.1",
         "tsup": "^8.5.0",

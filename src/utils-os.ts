@@ -1,5 +1,5 @@
-﻿import * as fs from 'fs';
-import * as path from 'path';
+﻿import fs from 'fs';
+import path from 'path';
 
 export function formatWith(str: string, obj: any): string {
     // 0. Replaces string patterns with named parameters: formatWith("Hello, {subject}", {subject: "world"}) --> "Hello, world"

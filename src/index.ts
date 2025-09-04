@@ -1,9 +1,8 @@
 import * as utl from './utils-os';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as mkdir from 'mkdir-p';
+import fs from 'fs';
+import path from 'path';
 
-function genFolderName(): string {
+function genFolderName(): string | undefined {
     // 0. Generate file/folder name.
     return utl.files.ensureNameUnique(`${utl.files.getDesktopPath()}/copy ${utl.files.nowDayTime()}`, false);
 }
@@ -12,6 +11,7 @@ class app {
     private static isOurdir(name: string): boolean {
         return /^\[\d+\] /.test(name); // i.e. folder name starts from [1]
     }
+    
     private static scanSubDirs(name: string, level: number, rv_names: string[]) {
         fs.readdirSync(name).forEach((subName: string) => {
             let fn = path.join(name, subName);
@@ -22,7 +22,8 @@ class app {
                 }
             }
         });
-    } //scanSubDirs()
+    }
+
     static handleNames(dest: string, names: string[]) {
         names.forEach((root) => {
             if (utl.files.isDirectory(root)) {
@@ -36,12 +37,12 @@ class app {
                     let newName = path.join(dest, last, short);
 
                     console.log(`  to "${newName}"`);
-                    mkdir.sync(newName);
+                    fs.mkdirSync(newName, { recursive: true });
                 });
             }
         });
-    } //handleNames()
-} //class app
+    }
+}
 
 function main(): void {
     console.log('Starting folders structure replication...\n');
@@ -54,9 +55,13 @@ function main(): void {
     }
 
     let dest = genFolderName();
+    if (!dest) {
+        throw Error('Failed to generate folder name.');
+    }
+
     app.handleNames(dest, newArgs);
 
     console.log('\nDone.\n');
-} //main()
+}
 
 main();
